@@ -10,16 +10,33 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet var zoomableImageGallery: ZoomableImageGalleryView!
+    
+    let images = [#imageLiteral(resourceName: "rabbits"), #imageLiteral(resourceName: "rabbits"), #imageLiteral(resourceName: "rabbits")]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        setUpZoomableImageGallery()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    private func setUpZoomableImageGallery() {
+        zoomableImageGallery.dataSource = self
     }
-
-
+    
 }
+
+extension ViewController: ZoomableImageGalleryViewDataSource {
+    
+    func numberOfImages() -> Int {
+        return images.count
+    }
+    
+    func configureZoomableImage(_ zoomImage: ZoomableImageView, withIndex index: Int) {
+        let image = images[index]
+        zoomImage.image = image
+    }
+    
+}
+
+
 
