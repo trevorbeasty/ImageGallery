@@ -8,19 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		0B617B0C1F90156000A79FF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617B0B1F90156000A79FF6 /* AppDelegate.swift */; };
-		0B617B0E1F90156000A79FF6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617B0D1F90156000A79FF6 /* ViewController.swift */; };
 		0B617B111F90156000A79FF6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B617B0F1F90156000A79FF6 /* Main.storyboard */; };
 		0B617B131F90156000A79FF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B617B121F90156000A79FF6 /* Assets.xcassets */; };
 		0B617B161F90156000A79FF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B617B141F90156000A79FF6 /* LaunchScreen.storyboard */; };
 		0B617B201F90DF9700A79FF6 /* ZoomableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617B1F1F90DF9700A79FF6 /* ZoomableImageView.swift */; };
 		0B617B221F90F16F00A79FF6 /* ZoomableImageGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617B211F90F16F00A79FF6 /* ZoomableImageGalleryView.swift */; };
 		0B617B241F90F5C300A79FF6 /* ZoomableImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617B231F90F5C300A79FF6 /* ZoomableImageCollectionViewCell.swift */; };
+		0B617B291F911E7000A79FF6 /* ZoomableImageGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617B281F911E7000A79FF6 /* ZoomableImageGalleryViewController.swift */; };
+		0B617B2B1F91217F00A79FF6 /* ZoomableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617B2A1F91217F00A79FF6 /* ZoomableDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0B617B081F90156000A79FF6 /* PicturePinch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicturePinch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B617B0B1F90156000A79FF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0B617B0D1F90156000A79FF6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0B617B101F90156000A79FF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0B617B121F90156000A79FF6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B617B151F90156000A79FF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -28,6 +28,8 @@
 		0B617B1F1F90DF9700A79FF6 /* ZoomableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomableImageView.swift; sourceTree = "<group>"; };
 		0B617B211F90F16F00A79FF6 /* ZoomableImageGalleryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomableImageGalleryView.swift; sourceTree = "<group>"; };
 		0B617B231F90F5C300A79FF6 /* ZoomableImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomableImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		0B617B281F911E7000A79FF6 /* ZoomableImageGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomableImageGalleryViewController.swift; sourceTree = "<group>"; };
+		0B617B2A1F91217F00A79FF6 /* ZoomableDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomableDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,17 +62,42 @@
 		0B617B0A1F90156000A79FF6 /* PicturePinch */ = {
 			isa = PBXGroup;
 			children = (
-				0B617B0B1F90156000A79FF6 /* AppDelegate.swift */,
-				0B617B0D1F90156000A79FF6 /* ViewController.swift */,
+				0B617B271F91008500A79FF6 /* Shared */,
+				0B617B261F91006000A79FF6 /* Client */,
+				0B617B251F91005200A79FF6 /* Image Gallery */,
+			);
+			path = PicturePinch;
+			sourceTree = "<group>";
+		};
+		0B617B251F91005200A79FF6 /* Image Gallery */ = {
+			isa = PBXGroup;
+			children = (
 				0B617B1F1F90DF9700A79FF6 /* ZoomableImageView.swift */,
 				0B617B231F90F5C300A79FF6 /* ZoomableImageCollectionViewCell.swift */,
 				0B617B211F90F16F00A79FF6 /* ZoomableImageGalleryView.swift */,
+				0B617B281F911E7000A79FF6 /* ZoomableImageGalleryViewController.swift */,
+			);
+			name = "Image Gallery";
+			sourceTree = "<group>";
+		};
+		0B617B261F91006000A79FF6 /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				0B617B2A1F91217F00A79FF6 /* ZoomableDataSource.swift */,
+			);
+			name = Client;
+			sourceTree = "<group>";
+		};
+		0B617B271F91008500A79FF6 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				0B617B0B1F90156000A79FF6 /* AppDelegate.swift */,
 				0B617B0F1F90156000A79FF6 /* Main.storyboard */,
 				0B617B121F90156000A79FF6 /* Assets.xcassets */,
 				0B617B141F90156000A79FF6 /* LaunchScreen.storyboard */,
 				0B617B171F90156000A79FF6 /* Info.plist */,
 			);
-			path = PicturePinch;
+			name = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,8 +175,9 @@
 			files = (
 				0B617B221F90F16F00A79FF6 /* ZoomableImageGalleryView.swift in Sources */,
 				0B617B241F90F5C300A79FF6 /* ZoomableImageCollectionViewCell.swift in Sources */,
-				0B617B0E1F90156000A79FF6 /* ViewController.swift in Sources */,
+				0B617B2B1F91217F00A79FF6 /* ZoomableDataSource.swift in Sources */,
 				0B617B0C1F90156000A79FF6 /* AppDelegate.swift in Sources */,
+				0B617B291F911E7000A79FF6 /* ZoomableImageGalleryViewController.swift in Sources */,
 				0B617B201F90DF9700A79FF6 /* ZoomableImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

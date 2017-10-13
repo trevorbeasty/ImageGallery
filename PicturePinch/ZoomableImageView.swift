@@ -14,6 +14,7 @@ protocol ZoomableImageViewProtocol {
     var zoomEnabled: Bool { get set }
     var minZoom: CGFloat { get set }
     var maxZoom: CGFloat { get set }
+    var zoomScale: CGFloat { get set }
 }
 
 class ZoomableImageView: UIView, ZoomableImageViewProtocol {
@@ -30,6 +31,10 @@ class ZoomableImageView: UIView, ZoomableImageViewProtocol {
         didSet {
             resetScrollViewConstraints()
         }
+    }
+    var zoomScale: CGFloat {
+        get { return scrollView.zoomScale }
+        set { scrollView.zoomScale = newValue }
     }
     var minZoom: CGFloat {
         get { return scrollView.minimumZoomScale }

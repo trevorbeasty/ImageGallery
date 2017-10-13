@@ -13,10 +13,18 @@ protocol ZoomableImageGalleryViewDataSource {
     func configureZoomableImage(_ zoomImage: ZoomableImageView, withIndex index: Int)
 }
 
+protocol ZoomableImageGalleryViewDelegate {
+    
+}
+
 protocol ZoomableImageGalleryViewProtocol {
     var minZoom: CGFloat { get set }
     var maxZoom: CGFloat { get set }
     var dataSource: ZoomableImageGalleryViewDataSource? { get set }
+    func reloadContent()
+    func invalidateCollectionViewLayout()
+    func correctContentOffset()
+    func resetZoomScales()
 }
 
 class ZoomableImageGalleryView: UIView, ZoomableImageGalleryViewProtocol {
@@ -30,10 +38,16 @@ class ZoomableImageGalleryView: UIView, ZoomableImageGalleryViewProtocol {
     fileprivate let cellID = "ZoomableImageCollectionViewCell"
     
     var dataSource: ZoomableImageGalleryViewDataSource? {
-        didSet { collectionView.reloadData() }
+        didSet {
+            updatePageControl()
+            collectionView.reloadData()
+        }
     }
+    var delegate: ZoomableImageGalleryViewDelegate?
     var minZoom: CGFloat = 1.0
     var maxZoom: CGFloat = 4.0
+    
+    fileprivate var transitionCells: [ZoomableImageCollectionViewCell] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -78,7 +92,15 @@ class ZoomableImageGalleryView: UIView, ZoomableImageGalleryViewProtocol {
         
     }
     
-    private func styleViews() {}
+    private func styleViews() {
+    
+        collectionView.isPagingEnabled = true
+        
+        pageControl.backgroundColor = .black
+        pageControl.pageIndicatorTintColor = .white
+        pageControl.currentPageIndicatorTintColor = .green
+    
+    }
 
     private func setUpCollectionView() {
         collectionView.dataSource = self
@@ -87,11 +109,43 @@ class ZoomableImageGalleryView: UIView, ZoomableImageGalleryViewProtocol {
     }
     
     private func setUpPageControl() {
+        pageControl.currentPage = 0
         pageControl.addTarget(self, action: #selector(pageControlValueDidChange(sender:)), for: .valueChanged)
+    }
+    
+    private func updatePageControl() {
+        pageControl.numberOfPages = dataSource?.numberOfImages() ?? 0
     }
     
     func pageControlValueDidChange(sender: UIPageControl) {
         print("page control value did change")
+    }
+    
+    func reloadContent() {
+        collectionView.reloadData()
+    }
+    
+    func invalidateCollectionViewLayout() {
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    func correctContentOffset() {
+        let indexPath = IndexPath(row: pageControl.currentPage, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+    
+    func resetZoomScales() {
+        
+        guard let ds = dataSource else { return }
+        
+        for i in 0..<ds.numberOfImages() {
+            
+            let ip = IndexPath(row: i, section: 0)
+            if let cell = collectionView.cellForItem(at: ip) as? ZoomableImageCollectionViewCell {
+                cell.zoomImage.zoomScale = 1.0
+            }
+            
+        }
     }
     
 }
@@ -138,9 +192,64 @@ extension ZoomableImageGalleryView: UICollectionViewDelegateFlowLayout {
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return collectionView.frame.width
+        return 0
     }
     
+}
+
+extension ZoomableImageGalleryView: UIScrollViewDelegate {
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+        transitionCells.removeAll()
+        
+        if let cv = scrollView as? UICollectionView {
+            
+            cv.visibleCells.forEach({
+                if let cell = $0 as? ZoomableImageCollectionViewCell {
+                    transitionCells.append(cell)
+                }
+            })
+        }
+        
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        transitionCells.forEach({
+            
+            if isVisible(view: $0.contentView) == false {
+                $0.zoomImage.zoomScale = 1.0
+            }
+            
+        })
+        
+        guard let cv = scrollView as? UICollectionView else { return }
+        
+        cv.visibleCells.forEach({
+            
+            let row = cv.indexPath(for: $0)!.row
+            
+            if $0.frame.origin == cv.contentOffset {
+                pageControl.currentPage = row
+            }
+
+        })
+    
+    }
+    
+}
+
+func isVisible(view: UIView) -> Bool {
+    func isVisible(view: UIView, inView: UIView?) -> Bool {
+        guard let inView = inView else { return true }
+        let viewFrame = inView.convert(view.bounds, from: view)
+        if viewFrame.intersects(inView.bounds) {
+            return isVisible(view: view, inView: inView.superview)
+        }
+        return false
+    }
+    return isVisible(view: view, inView: view.superview)
 }
 
 
