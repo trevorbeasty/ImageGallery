@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidFinishLaunching(_ application: UIApplication) {
         
         let dataSource = ZoomableDataSource()
-        let zoomableImageGalleryVC = ZoomableImageGalleryViewController()
+        let zoomableImageGalleryVC = ZoomableImageGalleryViewController(initialPage: 2)
         zoomableImageGalleryVC.dataSource = dataSource
         
         window?.rootViewController = zoomableImageGalleryVC

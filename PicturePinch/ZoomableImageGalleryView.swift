@@ -20,6 +20,7 @@ protocol ZoomableImageGalleryViewProtocol {
     func animateAlongsideTransitionToSize(_ size: CGSize)
     func completedTransitionToSize(_ size: CGSize)
     func reloadContent()
+    func selectPage(_ page: Int, animated: Bool)
 }
 
 class ZoomableImageGalleryView: UIView, ZoomableImageGalleryViewProtocol {
@@ -154,6 +155,12 @@ class ZoomableImageGalleryView: UIView, ZoomableImageGalleryViewProtocol {
     func completedTransitionToSize(_ size: CGSize) {
 
         pageCorrectionsEnabled = true
+    }
+    
+    func selectPage(_ page: Int, animated: Bool = false) {
+        guard let ds = dataSource, page < ds.numberOfImages() else { return }
+        let ip = IndexPath(row: page, section: 0)
+        collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: animated)
     }
     
 }

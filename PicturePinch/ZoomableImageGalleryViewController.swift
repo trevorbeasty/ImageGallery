@@ -8,10 +8,15 @@
 
 import UIKit
 
-class ZoomableImageGalleryViewController: UIViewController {
+protocol ZoomableImageGalleryViewControllerProtocol {
+    func selectPage(_ page: Int)
+}
+
+class ZoomableImageGalleryViewController: UIViewController, ZoomableImageGalleryViewControllerProtocol {
 
     let zoomableImageGalleryView = ZoomableImageGalleryView()
-    
+    private var initialPage: Int = 0
+    private var didSelectInitialPage = false
     var dataSource: ZoomableImageGalleryViewDataSource? {
         get { return zoomableImageGalleryView.dataSource }
         set {
@@ -19,8 +24,26 @@ class ZoomableImageGalleryViewController: UIViewController {
             zoomableImageGalleryView.reloadContent()
         }
     }
+    
+    init(initialPage: Int = 0) {
+        self.initialPage = initialPage
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     override func loadView() {
         view = zoomableImageGalleryView
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if didSelectInitialPage == false {
+            zoomableImageGalleryView.selectPage(initialPage)
+            didSelectInitialPage = true
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -38,6 +61,10 @@ class ZoomableImageGalleryViewController: UIViewController {
                 
         })
         
+    }
+    
+    func selectPage(_ page: Int) {
+        zoomableImageGalleryView.selectPage(page)
     }
 
 }
