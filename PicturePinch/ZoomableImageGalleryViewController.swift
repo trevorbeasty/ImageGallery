@@ -29,13 +29,12 @@ class ZoomableImageGalleryViewController: UIViewController {
         coordinator.animate(
             alongsideTransition: { [weak self] _ in
             
-                self?.zoomableImageGalleryView.invalidateCollectionViewLayout()
-                self?.zoomableImageGalleryView.resetZoomScales()
-            
+                self?.zoomableImageGalleryView.animateAlongsideTransitionToSize(size)
+                
             },
             completion: { [weak self] _ in
                 
-                self?.zoomableImageGalleryView.correctContentOffset()
+                self?.zoomableImageGalleryView.completedTransitionToSize(size)
                 
         })
         
